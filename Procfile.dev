@@ -2,3 +2,5 @@ backend: bin/rails s -p 3000
 # https://github.com/mperham/sidekiq/issues/3090#issuecomment-389748695
 worker: dotenv bundle exec sidekiq -C config/sidekiq.yml
 vite: bin/vite dev
+# Use the line below instead of "vite dev" if you access the app via ngrok (avoids lazy-compile timeouts)
+# vite: bin/vite build --watch
