@@ -64,6 +64,7 @@ const isActive = computed(() => {
     'sms',
     'telegram',
     'line',
+    'lazada',
     'instagram',
     'tiktok',
     'voice',

@@ -1,0 +1,8 @@
+{
+  "name": "integration-adapter",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ]
+}

@@ -405,6 +405,35 @@
         "CONFIGURE_SMTP_IMAP_LINK": "Click here",
         "CONFIGURE_SMTP_IMAP_TEXT": " to configure IMAP and SMTP settings"
       },
+      "LAZADA": {
+        "TITLE": "Lazada Channel",
+        "DESC": "Integrate with Lazada Live Chat and support your customers from a single dashboard.",
+        "INBOX_NAME": {
+          "LABEL": "Inbox Name",
+          "PLACEHOLDER": "e.g. Lazada Shop TH"
+        },
+        "APP_KEY": {
+          "LABEL": "App Key",
+          "PLACEHOLDER": "Lazada App Key from partner portal"
+        },
+        "APP_SECRET": {
+          "LABEL": "App Secret",
+          "PLACEHOLDER": "Lazada App Secret"
+        },
+        "SELLER_ID": {
+          "LABEL": "Seller ID",
+          "PLACEHOLDER": "Your Lazada Seller ID"
+        },
+        "REGION": {
+          "LABEL": "Region"
+        },
+        "SUBMIT_BUTTON": "Create Lazada Inbox",
+        "VALIDATION_ERROR": "Please fill in all required fields",
+        "ADAPTER_NOT_CONFIGURED": "Lazada adapter URL is not configured. Contact your administrator.",
+        "API": {
+          "ERROR_MESSAGE": "Failed to create the Lazada inbox. Please check your credentials and try again."
+        }
+      },
       "LINE_CHANNEL": {
         "TITLE": "LINE Channel",
         "DESC": "Integrate with LINE channel and start supporting your customers.",
@@ -484,6 +513,10 @@
           "LINE": {
             "TITLE": "Line",
             "DESCRIPTION": "Integrate your Line channel"
+          },
+          "LAZADA": {
+            "TITLE": "Lazada",
+            "DESCRIPTION": "Connect your Lazada shop live chat"
           },
           "INSTAGRAM": {
             "TITLE": "Instagram",

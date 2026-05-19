@@ -72,6 +72,12 @@ const channelList = computed(() => {
       icon: 'i-woot-line',
     },
     {
+      key: 'lazada',
+      title: t('INBOX_MGMT.ADD.AUTH.CHANNEL.LAZADA.TITLE'),
+      description: t('INBOX_MGMT.ADD.AUTH.CHANNEL.LAZADA.DESCRIPTION'),
+      icon: 'i-woot-api',
+    },
+    {
       key: 'instagram',
       title: t('INBOX_MGMT.ADD.AUTH.CHANNEL.INSTAGRAM.TITLE'),
       description: t('INBOX_MGMT.ADD.AUTH.CHANNEL.INSTAGRAM.DESCRIPTION'),

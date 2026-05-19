@@ -110,6 +110,31 @@ services:
       - 1025:1025
       - 8025:8025
 
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo_data:/data/db
+
+  adapter-lazada:
+    build:
+      context: ./integration-adapter
+      dockerfile: ./services/adapter-lazada/Dockerfile
+    ports:
+      - '3002:3001'
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/cxbox_adapter
+      - CHATWOOT_BASE_URL=http://rails:3000
+      - CHATWOOT_API_TOKEN=${CHATWOOT_API_TOKEN}
+      - CHATWOOT_ACCOUNT_ID=${CHATWOOT_ACCOUNT_ID}
+      - REDIS_URL=redis://redis:6379/3
+      - ADAPTER_LAZADA_PUBLIC_URL=${ADAPTER_LAZADA_PUBLIC_URL}
+      - INTERNAL_API_SECRET=${ADAPTER_INTERNAL_API_SECRET}
+      - PORT=3001
+    restart: unless-stopped
+    depends_on:
+      - mongo
+      - redis
+
 volumes:
   postgres:
   redis:
@@ -117,3 +142,4 @@ volumes:
   node_modules:
   cache:
   bundle:
+  mongo_data:

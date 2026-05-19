@@ -29,5 +29,37 @@ services:
       - 1025:1025
       - 8025:8025
 
+  mongo:
+    image: mongo:7
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_DATABASE}
+    ports:
+      - '27017:27017'
+    volumes:
+      - /Users/bomdmit/DockerVolumes/cxbox-standalone-mongo:/data/db
+
+  adapter-lazada:
+    build:
+      context: ./integration-adapter
+      dockerfile: ./services/adapter-lazada/Dockerfile
+    ports:
+      - '3002:3001'
+    environment:
+      - MONGODB_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD_ENCODED}@mongo:27017/${MONGO_DATABASE}?authSource=admin
+      - CHATWOOT_BASE_URL=http://host.docker.internal:3000
+      - CHATWOOT_API_TOKEN=${CHATWOOT_API_TOKEN}
+      - CHATWOOT_ACCOUNT_ID=${CHATWOOT_ACCOUNT_ID}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/3
+      - ADAPTER_LAZADA_PUBLIC_URL=${ADAPTER_LAZADA_PUBLIC_URL}
+      - INTERNAL_API_SECRET=${ADAPTER_INTERNAL_API_SECRET}
+      - PORT=3001
+    restart: unless-stopped
+    depends_on:
+      - mongo
+      - redis
+
 volumes:
   redis:
