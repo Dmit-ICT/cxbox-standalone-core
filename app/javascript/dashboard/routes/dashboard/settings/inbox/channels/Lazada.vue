@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router';
 import { useAlert } from 'dashboard/composables';
 import axios from 'axios';
 
@@ -9,15 +8,12 @@ import PageHeader from '../../SettingsSubPageHeader.vue';
 import Button from 'dashboard/components-next/button/Button.vue';
 
 const { t } = useI18n();
-const router = useRouter();
 
 const inboxName = ref('');
 const appKey = ref('');
 const appSecret = ref('');
-const sellerId = ref('');
 const region = ref('th');
 const isLoading = ref(false);
-const webhookUrl = ref('');
 
 const REGIONS = [
   { label: 'Thailand (TH)', value: 'th' },
@@ -30,13 +26,8 @@ const REGIONS = [
 
 const adapterUrl = window.chatwootConfig?.adapterLazadaUrl || '';
 
-const createChannel = async () => {
-  if (
-    !inboxName.value ||
-    !appKey.value ||
-    !appSecret.value ||
-    !sellerId.value
-  ) {
+const connectLazada = async () => {
+  if (!inboxName.value || !appKey.value || !appSecret.value) {
     useAlert(t('INBOX_MGMT.ADD.LAZADA.VALIDATION_ERROR'));
     return;
   }
@@ -51,19 +42,14 @@ const createChannel = async () => {
       inbox_name: inboxName.value.trim(),
       app_key: appKey.value.trim(),
       app_secret: appSecret.value.trim(),
-      seller_id: sellerId.value.trim(),
       region: region.value,
     });
 
-    webhookUrl.value = res.data.lazada_webhook_url;
-
-    router.replace({
-      name: 'settings_inboxes_add_agents',
-      params: { page: 'new', inbox_id: res.data.inbox_id },
-    });
+    // Redirect the browser to Lazada OAuth. The state param encodes
+    // account_id + inbox_id so the Rails callback can complete the flow.
+    window.location.href = res.data.oauth_url;
   } catch {
     useAlert(t('INBOX_MGMT.ADD.LAZADA.API.ERROR_MESSAGE'));
-  } finally {
     isLoading.value = false;
   }
 };
@@ -75,7 +61,7 @@ const createChannel = async () => {
       :header-title="$t('INBOX_MGMT.ADD.LAZADA.TITLE')"
       :header-content="$t('INBOX_MGMT.ADD.LAZADA.DESC')"
     />
-    <form class="flex flex-wrap flex-col mx-0" @submit.prevent="createChannel">
+    <form class="flex flex-wrap flex-col mx-0" @submit.prevent="connectLazada">
       <div class="flex-shrink-0 flex-grow-0">
         <label>
           {{ $t('INBOX_MGMT.ADD.LAZADA.INBOX_NAME.LABEL') }}
@@ -89,33 +75,24 @@ const createChannel = async () => {
 
       <div class="flex-shrink-0 flex-grow-0">
         <label>
-          {{ $t('INBOX_MGMT.ADD.LAZADA.APP_KEY.LABEL') }}
+          {{ $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_KEY.LABEL') }}
           <input
             v-model="appKey"
             type="text"
-            :placeholder="$t('INBOX_MGMT.ADD.LAZADA.APP_KEY.PLACEHOLDER')"
+            :placeholder="$t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_KEY.PLACEHOLDER')"
           />
         </label>
       </div>
 
       <div class="flex-shrink-0 flex-grow-0">
         <label>
-          {{ $t('INBOX_MGMT.ADD.LAZADA.APP_SECRET.LABEL') }}
+          {{ $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_SECRET.LABEL') }}
           <input
             v-model="appSecret"
             type="password"
-            :placeholder="$t('INBOX_MGMT.ADD.LAZADA.APP_SECRET.PLACEHOLDER')"
-          />
-        </label>
-      </div>
-
-      <div class="flex-shrink-0 flex-grow-0">
-        <label>
-          {{ $t('INBOX_MGMT.ADD.LAZADA.SELLER_ID.LABEL') }}
-          <input
-            v-model="sellerId"
-            type="text"
-            :placeholder="$t('INBOX_MGMT.ADD.LAZADA.SELLER_ID.PLACEHOLDER')"
+            :placeholder="
+              $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_SECRET.PLACEHOLDER')
+            "
           />
         </label>
       </div>

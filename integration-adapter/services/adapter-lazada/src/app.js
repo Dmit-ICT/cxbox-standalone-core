@@ -9,6 +9,7 @@ const { Queue } = require('bullmq');
 const setupRouter = require('./routes/setup');
 const webhookRouter = require('./routes/webhook');
 const chatwootCallbackRouter = require('./routes/chatwootCallback');
+const oauthCallbackRouter = require('./routes/oauthCallback');
 
 // Start BullMQ workers
 require('./workers/inboundWorker');
@@ -35,6 +36,9 @@ app.use('/internal/setup', setupRouter);
 
 // Internal: called by Chatwoot Channel::Api on agent reply
 app.use('/internal/chatwoot-callback', chatwootCallbackRouter);
+
+// Internal: called by Rails lazada_chat/callbacks_controller to exchange OAuth code for tokens
+app.use('/internal/oauth/callback', oauthCallbackRouter);
 
 // External: called by Lazada Open Platform on buyer message
 app.use('/webhooks/lazada', webhookRouter);

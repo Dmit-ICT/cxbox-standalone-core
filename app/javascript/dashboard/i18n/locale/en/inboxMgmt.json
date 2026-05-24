@@ -412,26 +412,22 @@
           "LABEL": "Inbox Name",
           "PLACEHOLDER": "e.g. Lazada Shop TH"
         },
-        "APP_KEY": {
-          "LABEL": "App Key",
-          "PLACEHOLDER": "Lazada App Key from partner portal"
+        "APP_CHAT_KEY": {
+          "LABEL": "App Chat Key",
+          "PLACEHOLDER": "Lazada App Chat Key"
         },
-        "APP_SECRET": {
-          "LABEL": "App Secret",
-          "PLACEHOLDER": "Lazada App Secret"
-        },
-        "SELLER_ID": {
-          "LABEL": "Seller ID",
-          "PLACEHOLDER": "Your Lazada Seller ID"
+        "APP_CHAT_SECRET": {
+          "LABEL": "App Chat Secret",
+          "PLACEHOLDER": "Lazada App Chat Secret"
         },
         "REGION": {
           "LABEL": "Region"
         },
-        "SUBMIT_BUTTON": "Create Lazada Inbox",
-        "VALIDATION_ERROR": "Please fill in all required fields",
+        "SUBMIT_BUTTON": "Connect to Lazada",
+        "VALIDATION_ERROR": "Please fill in Inbox Name, App Chat Key, and App Chat Secret",
         "ADAPTER_NOT_CONFIGURED": "Lazada adapter URL is not configured. Contact your administrator.",
         "API": {
-          "ERROR_MESSAGE": "Failed to create the Lazada inbox. Please check your credentials and try again."
+          "ERROR_MESSAGE": "Failed to connect to Lazada. Please check your credentials and try again."
         }
       },
       "LINE_CHANNEL": {

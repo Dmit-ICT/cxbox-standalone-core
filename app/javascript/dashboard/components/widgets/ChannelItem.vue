@@ -93,7 +93,8 @@ const onItemClick = () => {
   <ChannelSelector
     :title="channel.title"
     :description="channel.description"
-    :icon="channel.icon"
+    :icon="channel.icon || ''"
+    :image="channel.image || null"
     :is-coming-soon="isComingSoon"
     :is-beta="isBeta"
     :disabled="!isActive"

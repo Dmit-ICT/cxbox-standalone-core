@@ -14,7 +14,11 @@ defineProps({
   },
   icon: {
     type: String,
-    required: true,
+    default: '',
+  },
+  image: {
+    type: String,
+    default: null,
   },
   isComingSoon: {
     type: Boolean,
@@ -41,7 +45,13 @@ const { t } = useI18n();
     <div
       class="flex size-10 items-center justify-center rounded-full bg-n-alpha-2"
     >
-      <Icon :icon="icon" class="text-n-slate-10 size-6" />
+      <img
+        v-if="image"
+        :src="image"
+        :alt="title"
+        class="size-6 object-contain grayscale"
+      />
+      <Icon v-else :icon="icon" class="text-n-slate-10 size-6" />
     </div>
 
     <div class="flex flex-col items-start gap-1.5">
