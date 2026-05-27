@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import { useAlert } from 'dashboard/composables';
 import axios from 'axios';
 
@@ -15,6 +17,14 @@ const appSecret = ref('');
 const region = ref('th');
 const isLoading = ref(false);
 
+const rules = {
+  inboxName: { required },
+  appKey: { required },
+  appSecret: { required },
+};
+
+const v$ = useVuelidate(rules, { inboxName, appKey, appSecret });
+
 const REGIONS = [
   { label: 'Thailand (TH)', value: 'th' },
   { label: 'Singapore (SG)', value: 'sg' },
@@ -27,10 +37,9 @@ const REGIONS = [
 const adapterUrl = window.chatwootConfig?.adapterLazadaUrl || '';
 
 const connectLazada = async () => {
-  if (!inboxName.value || !appKey.value || !appSecret.value) {
-    useAlert(t('INBOX_MGMT.ADD.LAZADA.VALIDATION_ERROR'));
-    return;
-  }
+  v$.value.$touch();
+  if (v$.value.$invalid) return;
+
   if (!adapterUrl) {
     useAlert(t('INBOX_MGMT.ADD.LAZADA.ADAPTER_NOT_CONFIGURED'));
     return;
@@ -45,8 +54,6 @@ const connectLazada = async () => {
       region: region.value,
     });
 
-    // Redirect the browser to Lazada OAuth. The state param encodes
-    // account_id + inbox_id so the Rails callback can complete the flow.
     window.location.href = res.data.oauth_url;
   } catch {
     useAlert(t('INBOX_MGMT.ADD.LAZADA.API.ERROR_MESSAGE'));
@@ -63,29 +70,37 @@ const connectLazada = async () => {
     />
     <form class="flex flex-wrap flex-col mx-0" @submit.prevent="connectLazada">
       <div class="flex-shrink-0 flex-grow-0">
-        <label>
+        <label :class="{ error: v$.inboxName.$error }">
           {{ $t('INBOX_MGMT.ADD.LAZADA.INBOX_NAME.LABEL') }}
           <input
             v-model="inboxName"
             type="text"
             :placeholder="$t('INBOX_MGMT.ADD.LAZADA.INBOX_NAME.PLACEHOLDER')"
+            @blur="v$.inboxName.$touch"
           />
+          <span v-if="v$.inboxName.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.LAZADA.INBOX_NAME.ERROR') }}
+          </span>
         </label>
       </div>
 
       <div class="flex-shrink-0 flex-grow-0">
-        <label>
+        <label :class="{ error: v$.appKey.$error }">
           {{ $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_KEY.LABEL') }}
           <input
             v-model="appKey"
             type="text"
             :placeholder="$t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_KEY.PLACEHOLDER')"
+            @blur="v$.appKey.$touch"
           />
+          <span v-if="v$.appKey.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_KEY.ERROR') }}
+          </span>
         </label>
       </div>
 
       <div class="flex-shrink-0 flex-grow-0">
-        <label>
+        <label :class="{ error: v$.appSecret.$error }">
           {{ $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_SECRET.LABEL') }}
           <input
             v-model="appSecret"
@@ -93,7 +108,11 @@ const connectLazada = async () => {
             :placeholder="
               $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_SECRET.PLACEHOLDER')
             "
+            @blur="v$.appSecret.$touch"
           />
+          <span v-if="v$.appSecret.$error" class="message">
+            {{ $t('INBOX_MGMT.ADD.LAZADA.APP_CHAT_SECRET.ERROR') }}
+          </span>
         </label>
       </div>
 

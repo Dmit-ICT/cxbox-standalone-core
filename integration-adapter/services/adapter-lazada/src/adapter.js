@@ -23,6 +23,7 @@ async function sendText(shopInbox, sessionId, text, attempt = 0) {
 
   const baseUrl = getBaseUrl(shopInbox.region);
   const res = await axios.post(`${baseUrl}${apiPath}`, null, { params });
+  console.log(`[sendText] Lazada API response: ${JSON.stringify(res.data)}`);
 
   if (res.data.code === 'IllegalAccessToken' && attempt < 3) {
     const refreshed = await refreshLazadaToken(shopInbox);

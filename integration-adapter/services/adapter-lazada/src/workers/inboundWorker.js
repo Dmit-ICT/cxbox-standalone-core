@@ -1,9 +1,21 @@
 const { Worker } = require('bullmq');
 const { ShopInbox, ConversationMapping, chatwootClient } = require('@cxbox/adapter-core');
 
+function stripHtml(html) {
+  return html.replace(/<[^>]*>/g, '').trim();
+}
+
 function parseContent(data) {
   if (data.template_id === 1) {
-    try { return JSON.parse(data.content).txt || ''; } catch { return data.content; }
+    try {
+      const parsed = JSON.parse(data.content);
+      const txt = parsed.txt || '';
+      // If txt contains HTML, prefer the plain-text summary from ext.summary
+      if (/<[a-z][\s\S]*>/i.test(txt)) {
+        return parsed.ext?.summary ? stripHtml(parsed.ext.summary) : stripHtml(txt);
+      }
+      return txt || parsed.ext?.summary || '';
+    } catch { return data.content; }
   }
   if (data.template_id === 3) {
     try { return JSON.parse(data.content).imgUrl || '[image]'; } catch { return '[image]'; }

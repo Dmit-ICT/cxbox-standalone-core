@@ -410,15 +410,18 @@
         "DESC": "Integrate with Lazada Live Chat and support your customers from a single dashboard.",
         "INBOX_NAME": {
           "LABEL": "Inbox Name",
-          "PLACEHOLDER": "e.g. Lazada Shop TH"
+          "PLACEHOLDER": "e.g. Lazada Shop TH",
+          "ERROR": "This field is required"
         },
         "APP_CHAT_KEY": {
           "LABEL": "App Chat Key",
-          "PLACEHOLDER": "Lazada App Chat Key"
+          "PLACEHOLDER": "Lazada App Chat Key",
+          "ERROR": "This field is required"
         },
         "APP_CHAT_SECRET": {
           "LABEL": "App Chat Secret",
-          "PLACEHOLDER": "Lazada App Chat Secret"
+          "PLACEHOLDER": "Lazada App Chat Secret",
+          "ERROR": "This field is required"
         },
         "REGION": {
           "LABEL": "Region"

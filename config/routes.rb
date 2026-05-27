@@ -646,6 +646,8 @@ Rails.application.routes.draw do
   get 'tiktok/callback', to: 'tiktok/callbacks#show'
   get 'notion/callback', to: 'notion/callbacks#show'
   get 'authentication-lazada-chat', to: 'lazada_chat/callbacks#show'
+  post 'webhooks/lazada', to: 'lazada_chat/webhook_proxy#create'
+  post 'internal/chatwoot-callback', to: 'lazada_chat/chatwoot_callback_proxy#create'
   # ----------------------------------------------------------------------
   # Routes for external service verifications
   get '.well-known/assetlinks.json' => 'android_app#assetlinks'

@@ -19,7 +19,7 @@ async function findOrCreateContact(accountId, { name, identifier }) {
     name,
     identifier,
   });
-  return created.data;
+  return created.data.payload.contact;
 }
 
 async function findOrCreateConversation(accountId, inboxId, contactId, additionalAttributes) {

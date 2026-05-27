@@ -57,12 +57,17 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: tokenData.message || 'Lazada token exchange error' });
   }
 
-  const { access_token, refresh_token, expires_in, shop_id, country } = tokenData;
+  const { access_token, refresh_token, expires_in, account_id, country } = tokenData;
+  // Lazada returns `account_id` (not `shop_id`) as the numeric seller identifier.
+  // country_user_info[0].seller_id is the same value as a string.
+  const sellerId =
+    (tokenData.country_user_info && tokenData.country_user_info[0]?.seller_id) ||
+    String(account_id);
 
   await ShopInbox.findOneAndUpdate(
     { platform: 'lazada', chatwoot_inbox_id: Number(inbox_id) },
     {
-      seller_id: String(shop_id),
+      seller_id: sellerId,
       region: country || shopInbox.region,
       access_token,
       refresh_token,

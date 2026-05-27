@@ -24,7 +24,10 @@ router.post('/', async (req, res) => {
     return res.status(500).json({ error: 'LAZADA_OAUTH_REDIRECT_URI is not configured' });
   }
 
-  const webhookUrl = `${selfUrl}/internal/chatwoot-callback`;
+  // ADAPTER_CHATWOOT_WEBHOOK_BASE_URL lets you route the Chatwoot→adapter callback
+  // through a public URL (e.g. ngrok → Rails proxy) to bypass SSRF protection on localhost.
+  const chatwootWebhookBase = process.env.ADAPTER_CHATWOOT_WEBHOOK_BASE_URL || selfUrl;
+  const webhookUrl = `${chatwootWebhookBase}/internal/chatwoot-callback`;
 
   // Create Channel::Api inbox in Chatwoot with this adapter as the callback endpoint
   let inbox;

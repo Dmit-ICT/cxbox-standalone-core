@@ -16,7 +16,8 @@ class LazadaChat::CallbacksController < ApplicationController
 
     exchange_code_for_tokens(params[:code], inbox_id)
 
-    redirect_to "/app/accounts/#{account_id}/settings/inboxes/new/#{inbox_id}/agents",
+    frontend_url = ENV.fetch('FRONTEND_URL', 'http://localhost:3000')
+    redirect_to "#{frontend_url}/app/accounts/#{account_id}/settings/inboxes/new/#{inbox_id}/agents",
                 allow_other_host: true
   rescue StandardError => e
     Rails.logger.error("LazadaChat::CallbacksController error: #{e.message}")
@@ -52,6 +53,7 @@ class LazadaChat::CallbacksController < ApplicationController
   end
 
   def redirect_to_error(error_type)
-    redirect_to "/app/login?lazada_error=#{error_type}", allow_other_host: true
+    frontend_url = ENV.fetch('FRONTEND_URL', 'http://localhost:3000')
+    redirect_to "#{frontend_url}/app/login?lazada_error=#{error_type}", allow_other_host: true
   end
 end

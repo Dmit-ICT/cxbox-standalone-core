@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { createBullBoard } = require('@bull-board/api');
 const { BullMQAdapter } = require('@bull-board/api/bullMQAdapter');
@@ -16,6 +17,7 @@ require('./workers/inboundWorker');
 require('./workers/outboundWorker');
 
 const app = express();
+app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(express.json());
 
 // Bull Board — queue monitor UI at /queues (dev/staging only)
